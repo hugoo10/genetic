@@ -9,9 +9,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class RandomFilling<C extends Chromosome<G>, G extends Gene> extends Filling<C, G> {
-    public RandomFilling(AbstractChromosomeFactory<C, G> chromosomeFactory, Mating<C, G> mating, int populationSize) {
-        super(chromosomeFactory, mating, populationSize);
-    }
 
     @Override
     List<C> doFill(List<C> futurGeneration) {

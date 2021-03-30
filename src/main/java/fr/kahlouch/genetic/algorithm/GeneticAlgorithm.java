@@ -1,4 +1,4 @@
-package fr.kahlouch.genetic.genetic;
+package fr.kahlouch.genetic.algorithm;
 
 import fr.kahlouch.genetic.factory.AbstractChromosomeFactory;
 import fr.kahlouch.genetic.filling.Filling;
@@ -20,13 +20,13 @@ public class GeneticAlgorithm<C extends Chromosome<G>, G extends Gene> {
     private final Mating<C, G> mating;
     private final Mutation<G> mutation;
     private final Filling<C, G> filling;
-    AbstractChromosomeFactory<C, G> chromosomeFactory;
+    private final AbstractChromosomeFactory<C, G> chromosomeFactory;
     private C previousBest = null;
 
     private final List<Generation<C>> lineage;
     private final List<Integer> bestLineage = new ArrayList<>();
 
-    public GeneticAlgorithm(Selection<C, G> selection, Pairing<C> pairing, Mating<C, G> mating, Mutation<G> mutation, Filling<C, G> filling, AbstractChromosomeFactory<C, G> chromosomeFactory) {
+    GeneticAlgorithm(Selection<C, G> selection, Pairing<C> pairing, Mating<C, G> mating, Mutation<G> mutation, Filling<C, G> filling, AbstractChromosomeFactory<C, G> chromosomeFactory) {
         this.selection = selection;
         this.pairing = pairing;
         this.mating = mating;

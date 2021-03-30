@@ -1,5 +1,6 @@
 package fr.kahlouch.genetic.selection;
 
+import fr.kahlouch.genetic.algorithm.param.GeneticAlgorithmParam;
 import fr.kahlouch.genetic.factory.AbstractChromosomeFactory;
 import fr.kahlouch.genetic.population.Chromosome;
 import fr.kahlouch.genetic.population.Gene;
@@ -10,9 +11,14 @@ import java.util.stream.Collectors;
 
 public abstract class Selection<C extends Chromosome<G>, G extends Gene> {
     protected AbstractChromosomeFactory<C, G> chromosomeFactory;
+    protected GeneticAlgorithmParam params;
 
-    public Selection(AbstractChromosomeFactory<C, G> chromosomeFactory) {
+    public void setChromosomeFactory(AbstractChromosomeFactory<C, G> chromosomeFactory) {
         this.chromosomeFactory = chromosomeFactory;
+    }
+
+    public void setParams(GeneticAlgorithmParam params) {
+        this.params = params;
     }
 
     public final List<C> select(Generation<C> generation) {

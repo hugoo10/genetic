@@ -10,14 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TwoPointsMating<C extends Chromosome<G>, G extends Gene> extends Mating<C, G> {
-    public TwoPointsMating(AbstractChromosomeFactory<C, G> chromosomeFactory, Mutation<G> mutation) {
-        super(chromosomeFactory, mutation);
-    }
+
 
     @Override
     public List<C> doMate(C parent1, C parent2, List<C> childs) {
-        int splitIndex1 = Constants.RANDOM_GEN.nextInt(Constants.CHROMOSOME_SIZE);
-        int splitIndex2 = Constants.RANDOM_GEN.nextInt(Constants.CHROMOSOME_SIZE - splitIndex1) + splitIndex1;
+        int splitIndex1 = Constants.RANDOM_GEN.nextInt(this.params.chromosomeSize);
+        int splitIndex2 = Constants.RANDOM_GEN.nextInt(this.params.chromosomeSize - splitIndex1) + splitIndex1;
 
 
 
@@ -25,11 +23,11 @@ public class TwoPointsMating<C extends Chromosome<G>, G extends Gene> extends Ma
         List<G> childGene2 = new ArrayList<>();
         childGene1.addAll(parent1.getGenes().subList(0, splitIndex1));
         childGene1.addAll(parent2.getGenes().subList(splitIndex1, splitIndex2));
-        childGene1.addAll(parent2.getGenes().subList(splitIndex2, Constants.CHROMOSOME_SIZE));
+        childGene1.addAll(parent2.getGenes().subList(splitIndex2, this.params.chromosomeSize));
 
         childGene2.addAll(parent2.getGenes().subList(0, splitIndex1));
         childGene2.addAll(parent1.getGenes().subList(splitIndex1, splitIndex2));
-        childGene2.addAll(parent2.getGenes().subList(splitIndex2, Constants.CHROMOSOME_SIZE));
+        childGene2.addAll(parent2.getGenes().subList(splitIndex2, this.params.chromosomeSize));
         mutation.mutateList(childGene1);
         mutation.mutateList(childGene2);
         childs.get(0).addGenes(childGene1);

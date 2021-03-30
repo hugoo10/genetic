@@ -10,14 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomSelection<C extends Chromosome<G>, G extends Gene> extends Selection<C, G> {
-    public RandomSelection(AbstractChromosomeFactory<C, G> chromosomeFactory) {
-        super(chromosomeFactory);
-    }
 
     protected List<C> doSelect(Generation<C> generation) {
         List<C> selected = new ArrayList<>();
-        for (int i = 0; i < Constants.SELECTION_SIZE; ++i) {
-            selected.add(generation.getChromosomes().get(Constants.RANDOM_GEN.nextInt(Constants.POPULATION_SIZE)));
+        for (int i = 0; i < this.params.selectionSize; ++i) {
+            selected.add(generation.getChromosomes().get(Constants.RANDOM_GEN.nextInt(this.params.populationSize)));
         }
         return selected;
     }

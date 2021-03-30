@@ -12,15 +12,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RandomBreedBestFilling<C extends Chromosome<G>, G extends Gene> extends Filling<C, G> {
-    public RandomBreedBestFilling(AbstractChromosomeFactory<C, G> chromosomeFactory, Mating<C, G> mating) {
-        super(chromosomeFactory, mating);
-    }
 
     @Override
     List<C> doFill(List<C> futurGeneration) {
         List<C> toBreed = futurGeneration.stream()
                 .filter(chromosome -> chromosome.getChromosomeType() == Chromosome.ChromosomeType.SELECTED)
-                .limit(Constants.FILLING_RETRIEVE_TOP_SIZE)
+                .limit(this.params.fillingRetrieveTopSize)
                 .collect(Collectors.toList());
         if (toBreed.isEmpty()) {
             return Collections.singletonList(this.chromosomeFactory.createRandom());

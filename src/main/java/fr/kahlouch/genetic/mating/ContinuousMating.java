@@ -9,15 +9,11 @@ import fr.kahlouch.genetic.population.Gene;
 import java.util.List;
 
 public class ContinuousMating<C extends Chromosome<G>, G extends Gene> extends Mating<C, G> {
-    public ContinuousMating(AbstractChromosomeFactory<C, G> chromosomeFactory, Mutation<G> mutation) {
-        super(chromosomeFactory, mutation);
-    }
-
     @Override
     public List<C> doMate(C parent1, C parent2, List<C> childs) {
         final double random = Constants.RANDOM_GEN.nextDouble();
 
-        for (int i = 0; i < Constants.CHROMOSOME_SIZE; ++i) {
+        for (int i = 0; i < this.params.chromosomeSize; ++i) {
             List<G> genes = parent1.getGeneAt(i).breed(parent2.getGeneAt(i), random);
             childs.get(0).addGene(mutation.mutate(genes.get(0)));
             childs.get(1).addGene(mutation.mutate(genes.get(1)));

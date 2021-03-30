@@ -1,14 +1,19 @@
 package fr.kahlouch.genetic.factory;
 
-import fr.kahlouch.genetic.Constants;
+import fr.kahlouch.genetic.algorithm.param.GeneticAlgorithmParam;
 import fr.kahlouch.genetic.population.Chromosome;
 import fr.kahlouch.genetic.population.Gene;
 
 public abstract class AbstractChromosomeFactory<C extends Chromosome<G>, G extends Gene> {
-    protected final AbstractGeneFactory<G> geneFactory;
+    protected AbstractGeneFactory<G> geneFactory;
+    protected GeneticAlgorithmParam params;
 
-    public AbstractChromosomeFactory(AbstractGeneFactory<G> geneFactory) {
+    public void setGeneFactory(AbstractGeneFactory<G> geneFactory) {
         this.geneFactory = geneFactory;
+    }
+
+    public void setParams(GeneticAlgorithmParam params) {
+        this.params = params;
     }
 
     public abstract C create(Object... params);
@@ -16,7 +21,7 @@ public abstract class AbstractChromosomeFactory<C extends Chromosome<G>, G exten
     public final C createRandom() {
         final C chromosome = this.create();
         chromosome.setChromosomeType(Chromosome.ChromosomeType.RANDOM);
-        for (int i = 0; i < Constants.CHROMOSOME_SIZE; ++i) {
+        for (int i = 0; i < this.params.chromosomeSize; ++i) {
             chromosome.addGene(this.geneFactory.createRandom());
         }
         return chromosome;

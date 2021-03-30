@@ -6,9 +6,6 @@ import fr.kahlouch.genetic.population.Gene;
 
 public class GaussMutation<G extends Gene> extends Mutation<G> {
 
-    public GaussMutation(AbstractGeneFactory<G> abstractGeneFactory) {
-        super(abstractGeneFactory);
-    }
 
     @Override
     protected G doGeneMutation(G gene) {
