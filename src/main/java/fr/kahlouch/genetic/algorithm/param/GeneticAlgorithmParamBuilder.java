@@ -10,9 +10,6 @@ public final class GeneticAlgorithmParamBuilder {
     private int fillingRetrieveTopSize;
     private double mutationOdd;
 
-    public GeneticAlgorithmParamBuilder() {
-    }
-
     public GeneticAlgorithmParamBuilder populationSize(int populationSize) {
         this.populationSize = populationSize;
         return this;

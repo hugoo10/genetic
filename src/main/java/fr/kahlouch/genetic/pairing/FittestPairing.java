@@ -1,6 +1,5 @@
 package fr.kahlouch.genetic.pairing;
 
-import fr.kahlouch.genetic.Constants;
 import fr.kahlouch.genetic.population.Chromosome;
 import fr.kahlouch.genetic.population.Gene;
 import fr.kahlouch.genetic.population.Generation;

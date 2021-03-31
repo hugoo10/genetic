@@ -1,8 +1,6 @@
 package fr.kahlouch.genetic.mating;
 
 import fr.kahlouch.genetic.Constants;
-import fr.kahlouch.genetic.factory.AbstractChromosomeFactory;
-import fr.kahlouch.genetic.mutation.Mutation;
 import fr.kahlouch.genetic.population.Chromosome;
 import fr.kahlouch.genetic.population.Gene;
 

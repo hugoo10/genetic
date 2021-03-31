@@ -1,6 +1,5 @@
 package fr.kahlouch.genetic.mutation;
 
-import fr.kahlouch.genetic.factory.AbstractGeneFactory;
 import fr.kahlouch.genetic.population.Gene;
 
 public class ResetMutation<G extends Gene> extends Mutation<G> {

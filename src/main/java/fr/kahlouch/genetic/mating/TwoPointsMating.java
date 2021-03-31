@@ -1,8 +1,6 @@
 package fr.kahlouch.genetic.mating;
 
 import fr.kahlouch.genetic.Constants;
-import fr.kahlouch.genetic.factory.AbstractChromosomeFactory;
-import fr.kahlouch.genetic.mutation.Mutation;
 import fr.kahlouch.genetic.population.Chromosome;
 import fr.kahlouch.genetic.population.Gene;
 
@@ -16,7 +14,6 @@ public class TwoPointsMating<C extends Chromosome<G>, G extends Gene> extends Ma
     public List<C> doMate(C parent1, C parent2, List<C> childs) {
         int splitIndex1 = Constants.RANDOM_GEN.nextInt(this.params.chromosomeSize);
         int splitIndex2 = Constants.RANDOM_GEN.nextInt(this.params.chromosomeSize - splitIndex1) + splitIndex1;
-
 
 
         List<G> childGene1 = new ArrayList<>();

@@ -22,10 +22,6 @@ public final class GeneticAlgorithmBuilder<C extends Chromosome<G>, G extends Ge
     private AbstractGeneFactory<G> geneFactory;
     private GeneticAlgorithmParam geneticAlgorithmParam;
 
-
-    public GeneticAlgorithmBuilder() {
-    }
-
     public GeneticAlgorithmBuilder<C, G> selection(Selection<C, G> selection) {
         this.selection = selection;
         return this;
