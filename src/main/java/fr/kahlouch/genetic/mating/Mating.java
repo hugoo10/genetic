@@ -5,26 +5,16 @@ import fr.kahlouch.genetic.factory.AbstractChromosomeFactory;
 import fr.kahlouch.genetic.mutation.Mutation;
 import fr.kahlouch.genetic.population.Chromosome;
 import fr.kahlouch.genetic.population.Gene;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
 public abstract class Mating<C extends Chromosome<G>, G extends Gene> {
     protected AbstractChromosomeFactory<C, G> chromosomeFactory;
     protected Mutation<G> mutation;
     protected GeneticAlgorithmParam params;
-
-    public void setChromosomeFactory(AbstractChromosomeFactory<C, G> chromosomeFactory) {
-        this.chromosomeFactory = chromosomeFactory;
-    }
-
-    public void setMutation(Mutation<G> mutation) {
-        this.mutation = mutation;
-    }
-
-    public void setParams(GeneticAlgorithmParam params) {
-        this.params = params;
-    }
 
     public final List<C> mate(C parent1, C parent2) {
         final List<C> childs = new ArrayList<>();

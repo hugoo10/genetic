@@ -4,20 +4,14 @@ import fr.kahlouch.genetic.Constants;
 import fr.kahlouch.genetic.algorithm.param.GeneticAlgorithmParam;
 import fr.kahlouch.genetic.factory.AbstractGeneFactory;
 import fr.kahlouch.genetic.population.Gene;
+import lombok.Setter;
 
 import java.util.List;
 
+@Setter
 public abstract class Mutation<G extends Gene> {
     protected AbstractGeneFactory<G> abstractGeneFactory;
     protected GeneticAlgorithmParam params;
-
-    public void setAbstractGeneFactory(AbstractGeneFactory<G> abstractGeneFactory) {
-        this.abstractGeneFactory = abstractGeneFactory;
-    }
-
-    public void setParams(GeneticAlgorithmParam params) {
-        this.params = params;
-    }
 
     public final G mutate(G gene) {
         if (Constants.RANDOM_GEN.nextDouble() <= this.params.mutationOdd) {

@@ -3,18 +3,12 @@ package fr.kahlouch.genetic.factory;
 import fr.kahlouch.genetic.algorithm.param.GeneticAlgorithmParam;
 import fr.kahlouch.genetic.population.Chromosome;
 import fr.kahlouch.genetic.population.Gene;
+import lombok.Setter;
 
+@Setter
 public abstract class AbstractChromosomeFactory<C extends Chromosome<G>, G extends Gene> {
     protected AbstractGeneFactory<G> geneFactory;
     protected GeneticAlgorithmParam params;
-
-    public void setGeneFactory(AbstractGeneFactory<G> geneFactory) {
-        this.geneFactory = geneFactory;
-    }
-
-    public void setParams(GeneticAlgorithmParam params) {
-        this.params = params;
-    }
 
     public abstract C create(Object... params);
 
