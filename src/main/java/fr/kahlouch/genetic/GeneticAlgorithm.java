@@ -13,7 +13,7 @@ public class GeneticAlgorithm {
     private GeneticAlgorithmParams params;
     private Double fitnessCap;
     private Long timeCapInMillis;
-    private Individual $previousBest;
+    private Individual previousBest;
 
     public GeneticAlgorithm(GeneticAlgorithmParams params, Long timeCapInMillis, Double fitnessCap) {
         if (params == null) throw new NullPointerException("params cannot be null");
@@ -41,8 +41,8 @@ public class GeneticAlgorithm {
                 .peek(Individual::computeFitness)
                 .max(Comparator.comparingDouble(Individual::getFitness))
                 .orElseThrow(RuntimeException::new);
-        if ($previousBest == null || $previousBest.getFitness() < best.getFitness()) {
-            this.$previousBest = best;
+        if (previousBest == null || previousBest.getFitness() < best.getFitness()) {
+            this.previousBest = best;
         }
         return best.getFitness();
     }
