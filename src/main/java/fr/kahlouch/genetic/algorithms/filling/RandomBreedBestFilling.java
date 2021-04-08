@@ -17,11 +17,11 @@ public class RandomBreedBestFilling extends Filling {
                 .limit(params.fillingRetrieveTopSize)
                 .collect(Collectors.toList());
         if (toBreed.isEmpty()) {
-            return Collections.singletonList(this.individualFactory.createRandom());
+            return Collections.singletonList(params.individualFactory.createRandom());
         } else {
             List<Individual> fillingIndividuals = new ArrayList<>();
             for (Individual individual : toBreed) {
-                final Individual[] parents = {individual, this.individualFactory.createRandom()};
+                final Individual[] parents = {individual, params.individualFactory.createRandom()};
                 for (List<Gene> chromosome : params.mating.mate(parents, params)) {
                     fillingIndividuals.add(params.individualFactory.create(chromosome));
                 }

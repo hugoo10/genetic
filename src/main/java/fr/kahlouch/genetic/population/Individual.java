@@ -4,10 +4,12 @@ import java.util.List;
 
 
 public abstract class Individual {
-    private List<Gene> chromosome;
-    private double fitness;
+    protected List<Gene> chromosome;
+    protected double fitness;
 
-    public abstract Individual copy();
+    public Individual(List<Gene> chromosome) {
+        this.chromosome = chromosome;
+    }
 
     public abstract void computeFitness();
 

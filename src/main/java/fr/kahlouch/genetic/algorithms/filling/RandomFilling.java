@@ -10,6 +10,6 @@ public class RandomFilling extends Filling {
 
     @Override
     List<Individual> doFill(List<Individual> population, List<Individual> selected, GeneticAlgorithmParams params) {
-        return Collections.singletonList(this.individualFactory.createRandom());
+        return Collections.singletonList(params.individualFactory.createRandom());
     }
 }
