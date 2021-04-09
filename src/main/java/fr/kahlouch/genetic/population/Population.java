@@ -8,6 +8,5 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public final class Population {
-    private List<Individual> individuals;
-
+    private final List<Individual> individuals;
 }

@@ -30,19 +30,25 @@ public class GeneticAlgorithmParams {
     public final FillingType filling = FillingType.RANDOM_BREED_BEST;
 
     @NonNull
-    public final AbstractGeneFactory geneFactory;
+    @Builder.Default
+    public final AbstractGeneFactory geneFactory = null;
     @NonNull
-    public final AbstractIndividualFactory individualFactory;
+    @Builder.Default
+    public final AbstractIndividualFactory individualFactory = null;
 
     @NonNull
     @Builder.Default
     public final Double mutationOdd = 0.01;
     @NonNull
-    public final Integer populationSize;
+    @Builder.Default
+    public final Integer populationSize = null;
     @NonNull
-    public final Integer selectionSize;
+    @Builder.Default
+    public final Integer selectionSize = null;
     @NonNull
-    public final Integer pairingSize;
+    @Builder.Default
+    public final Integer pairingSize = null;
     @NonNull
-    public final Integer fillingRetrieveTopSize;
+    @Builder.Default
+    public final Integer fillingRetrieveTopSize = null;
 }
