@@ -73,6 +73,7 @@ public class GeneticAlgorithm {
         final List<Individual> newPopulation = individuals2Mate.stream().flatMap(parents ->
                 Arrays.stream(this.params.mating.mate(parents, params)).map(params.individualFactory::create)
         ).collect(Collectors.toList());
+        newPopulation.addAll(selectedIndividuals);
         this.params.filling.fill(newPopulation, selectedIndividuals, params);
         return new Population(newPopulation);
     }
