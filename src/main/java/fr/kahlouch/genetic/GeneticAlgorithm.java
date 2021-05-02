@@ -53,6 +53,7 @@ public class GeneticAlgorithm {
         return currentPopulation;
     }
 
+
     private double computeFitness(Population population) {
         final Individual best = population.getIndividuals().stream()
                 .peek(Individual::computeFitness)
