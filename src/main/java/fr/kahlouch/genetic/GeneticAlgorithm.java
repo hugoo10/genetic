@@ -63,8 +63,8 @@ public class GeneticAlgorithm {
         if (previousBest == null || previousBest.getFitness() < best.getFitness()) {
             this.bestLineage.add(lineage.size() - 1);
             this.previousBest = best;
+            System.err.println(lineage.size() + " :: " + best.toString());
         }
-        System.err.println(lineage.size() + " :: " + best.toString());
         return best.getFitness();
     }
 
