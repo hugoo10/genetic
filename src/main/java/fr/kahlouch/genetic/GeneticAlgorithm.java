@@ -2,7 +2,9 @@ package fr.kahlouch.genetic;
 
 import fr.kahlouch.genetic.population.Individual;
 import fr.kahlouch.genetic.population.Population;
+import fr.kahlouch.genetic.utils.HistoryType;
 import lombok.Getter;
+import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,33 +39,43 @@ public class GeneticAlgorithm {
         this(params, fitnessCap, null);
     }
 
-    public Population compute(Population population) {
+    public Population compute(Population population, @NonNull HistoryType historyType) {
         long time = System.currentTimeMillis();
         Population currentPopulation = population;
         boolean haveTime;
         double lastComputedFitness;
 
+        var generation = 0;
         do {
-            lastComputedFitness = computeFitness(currentPopulation);
+            lastComputedFitness = computeFitness(currentPopulation, generation, historyType);
             haveTime = timeCapInMillis == null || System.currentTimeMillis() - time < timeCapInMillis;
             if (haveTime) {
                 currentPopulation = generateNextGeneration(currentPopulation);
             }
+            ++generation;
         } while (haveTime && lastComputedFitness < fitnessCap);
         return currentPopulation;
     }
 
 
-    private double computeFitness(Population population) {
+    private double computeFitness(Population population, int generation, HistoryType historyType) {
         final Individual best = population.getIndividuals().stream()
                 .peek(Individual::computeFitness)
                 .max(Comparator.comparingDouble(Individual::getFitness))
                 .orElseThrow(RuntimeException::new);
-        this.lineage.add(population);
-        if (previousBest == null || previousBest.getFitness() < best.getFitness()) {
-            this.bestLineage.add(lineage.size() - 1);
+        if (historyType == HistoryType.FULL) {
+            this.lineage.add(population);
+        }
+        final var newBest = previousBest == null || previousBest.getFitness() < best.getFitness();
+        if (newBest) {
             this.previousBest = best;
-            System.err.println(lineage.size() + " :: " + best.toString());
+        }
+        if ((newBest && historyType == HistoryType.ONLY_BEST) || historyType == HistoryType.FULL) {
+            this.lineage.add(population);
+            if (newBest) {
+                this.bestLineage.add(generation);
+                System.err.println((generation + 1) + " :: " + best.toString());
+            }
         }
         return best.getFitness();
     }
