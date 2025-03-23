@@ -1,6 +1,6 @@
 module Genetic {
-    requires static lombok;
-
+    requires org.jspecify;
+    requires javafx.base;
     exports fr.kahlouch.genetic.population;
     exports fr.kahlouch.genetic.algorithms.filling;
     exports fr.kahlouch.genetic.algorithms.mating;
@@ -9,5 +9,5 @@ module Genetic {
     exports fr.kahlouch.genetic.algorithms.selection;
     exports fr.kahlouch.genetic.factory;
     exports fr.kahlouch.genetic.utils;
-    exports fr.kahlouch.genetic;
+    exports fr.kahlouch.genetic.algorithms._genetic;
 }

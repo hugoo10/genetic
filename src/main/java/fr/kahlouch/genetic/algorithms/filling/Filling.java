@@ -1,22 +1,43 @@
 package fr.kahlouch.genetic.algorithms.filling;
 
-import fr.kahlouch.genetic.GeneticAlgorithmParams;
+import fr.kahlouch.genetic.algorithms._genetic.GeneticAlgorithmContext;
+import fr.kahlouch.genetic.population.EvaluatedIndividual;
 import fr.kahlouch.genetic.population.Individual;
-import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Setter
-public abstract class Filling {
-    final void fill(List<Individual> population, List<Individual> selected, GeneticAlgorithmParams params) {
-        while (population.size() < params.populationSize) {
-            List<Individual> individuals = doFill(population, selected, params);
-            int it = 0;
-            while (population.size() < params.populationSize && it < individuals.size()) {
-                population.add(individuals.get(it++));
-            }
-        }
+public record Filling(FillingAlgorithm algorithm, int retrieveTopSize) {
+    private static final FillingAlgorithm DEFAULT_ALGORITHM = FillingAlgorithm.RANDOM_BREED_BEST;
+    private static final int DEFAULT_RETRIEVE_TOP_SIZE = 1;
+
+    public Filling {
+        Objects.requireNonNull(algorithm);
     }
 
-    abstract List<Individual> doFill(List<Individual> individuals, List<Individual> selected, GeneticAlgorithmParams params);
+    public static Filling of() {
+        return new Filling(DEFAULT_ALGORITHM, DEFAULT_RETRIEVE_TOP_SIZE);
+    }
+
+    public static Filling of(FillingAlgorithm algorithm) {
+        return new Filling(algorithm, DEFAULT_RETRIEVE_TOP_SIZE);
+    }
+
+    public static Filling of(int retrieveTopSize) {
+        return new Filling(DEFAULT_ALGORITHM, retrieveTopSize);
+    }
+
+    public List<Individual> fill(List<Individual> population, List<EvaluatedIndividual> selected, GeneticAlgorithmContext context) {
+        final var missingIndividuals = context.populationSize() - population.size();
+        if (missingIndividuals <= 0) {
+            return population;
+        }
+
+        final var newPopulation = new ArrayList<>(population);
+        final var additionalIndividuals = this.algorithm.fill(selected, context).limit(missingIndividuals).toList();
+        newPopulation.addAll(additionalIndividuals);
+
+        return newPopulation;
+    }
 }
