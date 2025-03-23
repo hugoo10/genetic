@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Objects;
 
 
-public final class EvaluatedPopulation {
+public final class EvaluatedGeneration {
+    private final long generationNumber;
     private final List<EvaluatedIndividual> individuals;
     private final EvaluatedIndividual best;
 
-    public EvaluatedPopulation(List<EvaluatedIndividual> individuals) {
+    public EvaluatedGeneration(long generationNumber, List<EvaluatedIndividual> individuals) {
         Objects.requireNonNull(individuals);
+        this.generationNumber = generationNumber;
         this.individuals = List.copyOf(individuals);
         this.best = this.individuals.stream()
                 .max(Comparator.comparingDouble(EvaluatedIndividual::fitness))
@@ -23,5 +25,14 @@ public final class EvaluatedPopulation {
 
     public EvaluatedIndividual getBest() {
         return this.best;
+    }
+
+    public long getGenerationNumber() {
+        return generationNumber;
+    }
+
+    @Override
+    public String toString() {
+        return this.generationNumber + ": " + this.best;
     }
 }

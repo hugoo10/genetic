@@ -31,6 +31,31 @@ public class GeneticAlgorithmBuilder {
         this.geneticFactory = geneticFactory;
     }
 
+    public GeneticAlgorithmBuilder selection(Selection selection) {
+        this.selection = selection;
+        return this;
+    }
+
+    public GeneticAlgorithmBuilder pairing(Pairing pairing) {
+        this.pairing = pairing;
+        return this;
+    }
+
+    public GeneticAlgorithmBuilder mating(Mating mating) {
+        this.mating = mating;
+        return this;
+    }
+
+    public GeneticAlgorithmBuilder mutation(Mutation mutation) {
+        this.mutation = mutation;
+        return this;
+    }
+
+    public GeneticAlgorithmBuilder filling(Filling selection) {
+        this.filling = selection;
+        return this;
+    }
+
     public GeneticAlgorithm build() {
         final var selection = Objects.requireNonNullElseGet(this.selection, Selection::of);
         final var pairing = Objects.requireNonNullElseGet(this.pairing, Pairing::of);

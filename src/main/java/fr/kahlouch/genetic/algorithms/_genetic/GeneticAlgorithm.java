@@ -7,20 +7,15 @@ import fr.kahlouch.genetic.algorithms.pairing.Pairing;
 import fr.kahlouch.genetic.algorithms.selection.Selection;
 import fr.kahlouch.genetic.factory.GeneticFactory;
 import fr.kahlouch.genetic.population.*;
-import fr.kahlouch.genetic.utils.HistoryType;
 import org.jspecify.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class GeneticAlgorithm {
     private final GeneticAlgorithmContext context;
-
-    private final List<Integer> bestLineage;
-    private final List<EvaluatedPopulation> lineage;
-    @Nullable
-    private EvaluatedIndividual currentBest;
 
     GeneticAlgorithm(int populationSize,
                      GeneticFactory geneticFactory,
@@ -30,34 +25,38 @@ public final class GeneticAlgorithm {
                      Mutation mutation,
                      Filling filling) {
         this.context = new GeneticAlgorithmContext(populationSize, geneticFactory, selection, pairing, mating, mutation, filling);
-        this.bestLineage = new ArrayList<>();
-        this.lineage = new ArrayList<>();
     }
 
     public static GeneticAlgorithmBuilder builder(int populationSize, GeneticFactory geneticFactory) {
         return new GeneticAlgorithmBuilder(populationSize, geneticFactory);
     }
 
-    public EvaluatedPopulation compute(NewBornPopulation population, HistoryType historyType, Double fitnessCap, Long timeCapInMillis) {
-        long time = System.currentTimeMillis();
-        NewBornPopulation currentPopulation = population;
-        boolean haveTime;
+    public GeneticAlgorithmExecutionHistory compute(GeneticAlgorithmExecutionCommand command) {
+        final var history = new GeneticAlgorithmExecutionHistory(command.getHistoryType());
+        final var startTime = Instant.now();
+        NewBornGeneration currentPopulation = command.getFirstPopulation();
 
-        var generation = 0;
         do {
-            final var evaluatedPopulation = computeFitness(currentPopulation, generation, historyType);
-            haveTime = timeCapInMillis == null || System.currentTimeMillis() - time < timeCapInMillis;
-            if (haveTime) {
-                currentPopulation = generateNextGeneration(evaluatedPopulation);
+            if (!isInTime(startTime, command.getTimeCap())) {
+                break;
             }
-            ++generation;
-        } while (haveTime && (this.currentBest == null || this.currentBest.fitness() < fitnessCap));
+            final var evaluatedPopulation = computeFitness(currentPopulation);
+            currentPopulation = generateNextGeneration(evaluatedPopulation);
+            history.historize(evaluatedPopulation);
+        } while (history.getCurrentBest().fitness() < command.getFitnessCap());
 
-        return this.lineage.getLast();
+        return history;
+    }
+
+    private boolean isInTime(Instant startTime, @Nullable Duration timeCap) {
+        if (timeCap == null) {
+            return true;
+        }
+        return Duration.between(startTime, Instant.now()).compareTo(timeCap) < 0;
     }
 
 
-    private EvaluatedPopulation computeFitness(NewBornPopulation population, int generation, HistoryType historyType) {
+    private EvaluatedGeneration computeFitness(NewBornGeneration population) {
         final var evaluatedIndividuals = population.individuals().stream()
                 .map(individual ->
                         switch (individual) {
@@ -65,28 +64,11 @@ public final class GeneticAlgorithm {
                             case NewBornIndividual nbi -> nbi.computeFitness();
                         }
                 ).toList();
-        final var evaluatedPopulation = new EvaluatedPopulation(evaluatedIndividuals);
-        final var evaluatedBest = evaluatedPopulation.getBest();
-
-        if (historyType == HistoryType.FULL) {
-            this.lineage.add(evaluatedPopulation);
-        }
-        final var newBest = currentBest == null || currentBest.fitness() < evaluatedBest.fitness();
-        if (newBest) {
-            this.currentBest = evaluatedBest;
-        }
-        if ((newBest && historyType == HistoryType.ONLY_BEST) || historyType == HistoryType.FULL) {
-            this.lineage.add(evaluatedPopulation);
-            if (newBest) {
-                this.bestLineage.add(generation);
-                System.err.println((generation + 1) + " :: " + this.currentBest.toString());
-            }
-        }
-        return evaluatedPopulation;
+        return new EvaluatedGeneration(population.generationNumber(), evaluatedIndividuals);
     }
 
 
-    private NewBornPopulation generateNextGeneration(EvaluatedPopulation previousPopulation) {
+    private NewBornGeneration generateNextGeneration(EvaluatedGeneration previousPopulation) {
         final var individuals2Mate = this.context.pairing().pair(previousPopulation.getIndividuals(), context);
 
         final List<Individual> newPopulation = individuals2Mate.stream()
@@ -97,18 +79,6 @@ public final class GeneticAlgorithm {
         newPopulation.addAll(selectedIndividuals);
 
         final var newBornPopulation = this.context.filling().fill(newPopulation, selectedIndividuals, context);
-        return new NewBornPopulation(newBornPopulation);
-    }
-
-    public List<Integer> getBestLineage() {
-        return bestLineage;
-    }
-
-    public EvaluatedIndividual getCurrentBest() {
-        return currentBest;
-    }
-
-    public List<EvaluatedPopulation> getLineage() {
-        return lineage;
+        return new NewBornGeneration(previousPopulation.getGenerationNumber() + 1, newBornPopulation);
     }
 }

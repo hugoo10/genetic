@@ -7,38 +7,36 @@ import fr.kahlouch.genetic.population.Parents;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 public enum FillingAlgorithm {
-    RANDOM((_, context) ->
-            Stream.generate(() -> context.geneticFactory().createRandomIndividual())),
-    RANDOM_BREED_BEST((selected, context) -> {
-        final var toBreed = selected.stream()
-                .sorted(Comparator.comparing(EvaluatedIndividual::fitness, Comparator.reverseOrder()))
-                .limit(context.filling().retrieveTopSize())
-                .toList();
-
-        if (toBreed.isEmpty()) {
-            return RANDOM.fill(selected, context);
+    RANDOM {
+        @Override
+        Stream<Individual> fill(List<EvaluatedIndividual> selected, GeneticAlgorithmContext context) {
+            return Stream.generate(() -> context.geneticFactory().createRandomIndividual());
         }
+    },
+    RANDOM_BREED_BEST {
+        @Override
+        Stream<Individual> fill(List<EvaluatedIndividual> selected, GeneticAlgorithmContext context) {
+            final var toBreed = selected.stream()
+                    .sorted(Comparator.comparing(EvaluatedIndividual::fitness, Comparator.reverseOrder()))
+                    .limit(context.filling().retrieveTopSize())
+                    .toList();
 
-        return Stream.generate(() -> toBreed)
-                .flatMap(List::stream)
-                .flatMap(parent1 -> {
-                    final var parent2 = context.geneticFactory().createRandomIndividual();
-                    final var parents = new Parents(parent1, parent2);
-                    return context.mating().mate(parents, context).stream();
-                });
-    });
+            if (toBreed.isEmpty()) {
+                return RANDOM.fill(selected, context);
+            }
 
-    private final BiFunction<List<EvaluatedIndividual>, GeneticAlgorithmContext, Stream<Individual>> algorithm;
+            return Stream.generate(() -> toBreed)
+                    .flatMap(List::stream)
+                    .flatMap(parent1 -> {
+                        final var parent2 = context.geneticFactory().createRandomIndividual();
+                        final var parents = new Parents(parent1, parent2);
+                        return context.mating().mate(parents, context).stream();
+                    });
+        }
+    };
 
-    FillingAlgorithm(BiFunction<List<EvaluatedIndividual>, GeneticAlgorithmContext, Stream<Individual>> algorithm) {
-        this.algorithm = algorithm;
-    }
-
-    Stream<Individual> fill(List<EvaluatedIndividual> selected, GeneticAlgorithmContext context) {
-        return algorithm.apply(selected, context);
-    }
+    abstract Stream<Individual> fill(List<EvaluatedIndividual> selected, GeneticAlgorithmContext context);
 }
