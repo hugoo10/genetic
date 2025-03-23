@@ -15,6 +15,8 @@ public final class GeneticAlgorithmExecutionHistory {
     private final HistoryType type;
     @Nullable
     private EvaluatedIndividual currentBest;
+    @Nullable
+    private EvaluatedGeneration currentBestGeneration;
 
     public GeneticAlgorithmExecutionHistory(HistoryType type) {
         this.bestLineage = new ArrayList<>();
@@ -28,6 +30,7 @@ public final class GeneticAlgorithmExecutionHistory {
         final var newBest = currentBest == null || currentBest.fitness() < evaluatedBest.fitness();
         if (newBest) {
             this.currentBest = evaluatedBest;
+            this.currentBestGeneration = evaluatedGeneration;
         }
 
         final boolean addInLineage = type == HistoryType.FULL;
@@ -54,5 +57,10 @@ public final class GeneticAlgorithmExecutionHistory {
     public EvaluatedIndividual getCurrentBest() {
         Objects.requireNonNull(currentBest);
         return currentBest;
+    }
+
+    public EvaluatedGeneration getCurrentBestGeneration() {
+        Objects.requireNonNull(currentBestGeneration);
+        return currentBestGeneration;
     }
 }

@@ -46,6 +46,14 @@ public class GeneticAlgorithmExecutionCommand {
         return new Builder();
     }
 
+    public Builder toBuilder() {
+        return new Builder()
+                .firstPopulation(this.firstPopulation)
+                .historyType(this.historyType)
+                .fitnessCap(this.fitnessCap)
+                .timeCap(this.timeCap);
+    }
+
 
     public static class Builder {
         @Nullable
@@ -72,7 +80,7 @@ public class GeneticAlgorithmExecutionCommand {
             return this;
         }
 
-        public Builder timeCapInMillis(Duration timeCap) {
+        public Builder timeCap(Duration timeCap) {
             this.timeCap = timeCap;
             return this;
         }
@@ -83,6 +91,5 @@ public class GeneticAlgorithmExecutionCommand {
             Objects.requireNonNull(this.fitnessCap);
             return new GeneticAlgorithmExecutionCommand(this.firstPopulation, this.historyType, this.fitnessCap, this.timeCap);
         }
-
     }
 }
