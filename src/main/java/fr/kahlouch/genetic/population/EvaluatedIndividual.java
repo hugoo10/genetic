@@ -13,4 +13,11 @@ public record EvaluatedIndividual(NewBornIndividual individual, double fitness) 
     public List<Gene> getChromosome() {
         return this.individual.getChromosome();
     }
+
+    @Override
+    public String toString() {
+        return "EvaluatedIndividual{" +
+                "fitness=" + fitness +
+                '}';
+    }
 }

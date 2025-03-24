@@ -11,7 +11,6 @@ import java.util.Objects;
 
 public final class GeneticAlgorithmExecutionHistory {
     private final List<EvaluatedGeneration> bestLineage;
-    private final List<EvaluatedGeneration> lineage;
     private final HistoryType type;
     @Nullable
     private EvaluatedIndividual currentBest;
@@ -20,7 +19,6 @@ public final class GeneticAlgorithmExecutionHistory {
 
     public GeneticAlgorithmExecutionHistory(HistoryType type) {
         this.bestLineage = new ArrayList<>();
-        this.lineage = new ArrayList<>();
         this.type = type;
     }
 
@@ -33,25 +31,18 @@ public final class GeneticAlgorithmExecutionHistory {
             this.currentBestGeneration = evaluatedGeneration;
         }
 
-        final boolean addInLineage = type == HistoryType.FULL;
-        final boolean addInBestLineage = (HistoryType.ONLY_BEST == this.type && newBest) || type == HistoryType.FULL;
+        final boolean addInBestLineage = (HistoryType.ONLY_BEST == this.type && newBest);
 
-
-        if (addInLineage) {
-            this.lineage.add(evaluatedGeneration);
-        }
         if (addInBestLineage) {
             this.bestLineage.add(evaluatedGeneration);
+        }
+        if(newBest) {
             System.err.println(evaluatedGeneration);
         }
     }
 
     public List<EvaluatedGeneration> getBestLineage() {
         return List.copyOf(bestLineage);
-    }
-
-    public List<EvaluatedGeneration> getLineage() {
-        return List.copyOf(lineage);
     }
 
     public EvaluatedIndividual getCurrentBest() {
