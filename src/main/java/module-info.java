@@ -1,13 +1,10 @@
 module Genetic {
     requires org.jspecify;
     requires javafx.base;
-    exports fr.kahlouch.genetic.population;
-    exports fr.kahlouch.genetic.algorithms.filling;
-    exports fr.kahlouch.genetic.algorithms.mating;
-    exports fr.kahlouch.genetic.algorithms.mutation;
-    exports fr.kahlouch.genetic.algorithms.pairing;
-    exports fr.kahlouch.genetic.algorithms.selection;
-    exports fr.kahlouch.genetic.factory;
-    exports fr.kahlouch.genetic.utils;
-    exports fr.kahlouch.genetic.algorithms._genetic;
+    exports fr.kahlouch.genetic.algorithm.step.crossover;
+    exports fr.kahlouch.genetic.algorithm.step.mutation;
+    exports fr.kahlouch.genetic.algorithm.step.selection;
+    exports fr.kahlouch.genetic.algorithm.step.elitism;
+    exports fr.kahlouch.genetic.algorithm.vo;
+    exports fr.kahlouch.genetic.algorithm;
 }
