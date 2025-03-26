@@ -23,13 +23,14 @@ public final class Population<G extends Gene, I extends Individual<G, T>, T> {
         return new Population<>(this.id + 1, individuals);
     }
 
-    public void compute() {
-        if (this.best != null) return;
+    public Population<G, I, T> compute() {
+        if (this.best != null) return this;
 
         this.best = this.individuals.parallelStream().unordered()
                 .peek(Individual::evaluate)
                 .max(Individual::compareTo)
                 .orElseThrow();
+        return this;
     }
 
     public long getId() {
