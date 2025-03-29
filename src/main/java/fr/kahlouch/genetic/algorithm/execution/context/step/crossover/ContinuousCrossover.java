@@ -1,16 +1,14 @@
 package fr.kahlouch.genetic.algorithm.execution.context.step.crossover;
 
-import fr.kahlouch.genetic.algorithm.helper.ExecutionHelper;
 import fr.kahlouch.genetic.algorithm.execution.context.step.selection.Parents;
+import fr.kahlouch.genetic.algorithm.helper.ExecutionHelper;
 import fr.kahlouch.genetic.algorithm.vo.Gene;
 import fr.kahlouch.genetic.algorithm.vo.Individual;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class ContinuousCrossover<G extends Gene, I extends Individual<G, T>, T> implements Crossover<G, I, T> {
-    private final Random random = new Random(System.currentTimeMillis());
+public class ContinuousCrossover<G extends Gene, I extends Individual<G, T>, T> extends Crossover<G, I, T> {
     private final ExecutionHelper<G, I, T> executionHelper;
 
     public ContinuousCrossover(ExecutionHelper<G, I, T> executionHelper) {

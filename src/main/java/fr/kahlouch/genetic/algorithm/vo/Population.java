@@ -2,8 +2,11 @@ package fr.kahlouch.genetic.algorithm.vo;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public final class Population<G extends Gene, I extends Individual<G, T>, T> {
+    private static final Logger LOGGER = Logger.getLogger(Population.class.getSimpleName());
+
     private final long id;
     private final List<I> individuals;
     private I best;

@@ -5,19 +5,16 @@ import fr.kahlouch.genetic.algorithm.vo.Individual;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class RouletteWheelElitism<G extends Gene, I extends Individual<G, T>, T> implements Elitism<G, I, T> {
-    private final Random random = new Random(System.currentTimeMillis());
-    private final double percent;
+public class RouletteWheelElitism<G extends Gene, I extends Individual<G, T>, T> extends Elitism<G, I, T> {
 
     public RouletteWheelElitism(double percent) {
-        this.percent = percent;
+        super(percent);
     }
 
     @Override
     public List<I> apply(List<I> individuals) {
-        final var selectionSize = individuals.size() * percent;
+        final var elitismSize = individuals.size() * percent;
 
 
         final var otherIndividuals = new ArrayList<>(individuals);
@@ -37,7 +34,7 @@ public class RouletteWheelElitism<G extends Gene, I extends Individual<G, T>, T>
         }
         List<I> selected = new ArrayList<>();
         double randomNumber;
-        while (selected.size() < selectionSize) {
+        while (selected.size() < elitismSize) {
             randomNumber = random.nextDouble();
             int i = 0;
             while (i < otherIndividuals.size() && cumulativeSum[i] < randomNumber) {

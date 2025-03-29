@@ -4,24 +4,28 @@ import fr.kahlouch.genetic.algorithm.vo.Gene;
 import fr.kahlouch.genetic.algorithm.vo.Individual;
 
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Stream;
 
 public abstract class ExecutionHelper<G extends Gene, I extends Individual<G, T>, T> {
+    protected final Random random = new Random(System.currentTimeMillis());
+
+    public I createRandomIndividual(int size) {
+        final var genes = Stream.generate(this::createRandomGene)
+                .limit(size)
+                .toList();
+        return createIndividual(genes);
+    }
+
     public abstract I createIndividual(List<G> genes);
 
     public abstract G breedGenes(G gene1, G gene2, double random);
 
-    public G createGeneFromCommand(CreateGeneCommand<G> createGeneCommand) {
-        return switch (createGeneCommand) {
-            case CreateGeneRandomCommand _ -> createRandomGene();
-            case CreateGeneFromGaussianCommand<G> command ->
-                    createFromGaussian(command.getReferenceGene(), command.getGaussian());
-            case CreateGeneCutomCommand command -> createGene(command);
-        };
+    public abstract G createRandomGene();
+
+    public G createFromGaussian(G referenceGene) {
+        return createFromGaussian(referenceGene, random.nextGaussian());
     }
 
-    protected abstract G createRandomGene();
-
     protected abstract G createFromGaussian(G referenceGene, double gaussian);
-
-    protected abstract G createGene(CreateGeneCutomCommand command);
 }

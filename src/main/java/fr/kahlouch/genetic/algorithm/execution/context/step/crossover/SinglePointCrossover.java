@@ -6,10 +6,8 @@ import fr.kahlouch.genetic.algorithm.vo.Individual;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class SinglePointCrossover<G extends Gene, I extends Individual<G, T>, T> implements Crossover<G, I, T> {
-    private final Random random = new Random(System.currentTimeMillis());
+public class SinglePointCrossover<G extends Gene, I extends Individual<G, T>, T> extends Crossover<G, I, T> {
 
     @Override
     public List<List<G>> apply(Parents<G, I, T> parents) {

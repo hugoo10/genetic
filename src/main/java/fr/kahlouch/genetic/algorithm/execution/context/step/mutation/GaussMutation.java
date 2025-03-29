@@ -1,23 +1,21 @@
 package fr.kahlouch.genetic.algorithm.execution.context.step.mutation;
 
-import fr.kahlouch.genetic.algorithm.helper.CreateGeneFromGaussianCommand;
 import fr.kahlouch.genetic.algorithm.helper.ExecutionHelper;
 import fr.kahlouch.genetic.algorithm.vo.Gene;
 import fr.kahlouch.genetic.algorithm.vo.Individual;
 
 
-public class GaussMutation<G extends Gene, I extends Individual<G, T>, T> implements Mutation<G> {
-    private final double odd;
+public class GaussMutation<G extends Gene, I extends Individual<G, T>, T> extends Mutation<G> {
     private final ExecutionHelper<G, I, T> executionHelper;
 
     public GaussMutation(double odd, ExecutionHelper<G, I, T> executionHelper) {
-        this.odd = odd;
+        super(odd);
         this.executionHelper = executionHelper;
     }
 
     @Override
     public G apply(G gene) {
-        final var createGeneFromGaussianCommand = new CreateGeneFromGaussianCommand<>(gene);
-        return (G) executionHelper.createGeneFromCommand(createGeneFromGaussianCommand);
+        if (random.nextDouble() > odd) return gene;
+        return executionHelper.createFromGaussian(gene);
     }
 }

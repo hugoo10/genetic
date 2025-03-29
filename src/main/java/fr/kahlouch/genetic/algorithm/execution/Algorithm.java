@@ -44,7 +44,7 @@ public final class Algorithm<G extends Gene, I extends Individual<G, T>, T> {
             final var nextIndividuals = executionContext.apply(computedPopulation.getIndividuals());
             populationToCompute = computedPopulation.nextPopulation(nextIndividuals);
 
-        } while (executionLimit.isEnd(currentBest.getFitnessComputeResult().fitness(), startInstant));
+        } while (!executionLimit.isEnd(currentBest.getFitnessComputeResult().fitness(), startInstant));
 
         return currentBest;
     }
