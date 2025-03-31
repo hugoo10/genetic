@@ -24,8 +24,13 @@ public final class BestIndividualHistory<G extends Gene, I extends Individual<G,
         }
 
         final var currentBest = indivuals.getLast();
-        if (currentBest.compareTo(contender) <= 0) {
+        if (currentBest.compareTo(contender) < 0) {
             indivuals.add(contender);
         }
+    }
+
+    @Override
+    public void sendEndSignal() {
+//noop
     }
 }

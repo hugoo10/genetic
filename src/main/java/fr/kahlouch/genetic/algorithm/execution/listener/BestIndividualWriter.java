@@ -42,4 +42,9 @@ public final class BestIndividualWriter<G extends Gene, I extends Individual<G, 
             this.stringConsumer.accept(population.getId() + ": " + this.currentBest);
         }
     }
+
+    @Override
+    public void sendEndSignal() {
+        this.stringConsumer.accept("END OF ALGORITHM");
+    }
 }

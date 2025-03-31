@@ -18,12 +18,19 @@ public final class BestPopulationListener<G extends Gene, I extends Individual<G
         }
 
         final var currentBestIndividual = currentBestPopulation.getBest();
-        if (currentBestIndividual.compareTo(contenderIndividual) <= 0) {
+        if (currentBestIndividual.compareTo(contenderIndividual) < 0) {
             currentBestPopulation = population;
         }
+    }
+
+
+    @Override
+    public void sendEndSignal() {
+//noop
     }
 
     public Population<G, I, T> getBestPopulation() {
         return currentBestPopulation;
     }
+
 }

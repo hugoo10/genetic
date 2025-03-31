@@ -46,6 +46,8 @@ public final class Algorithm<G extends Gene, I extends Individual<G, T>, T> {
 
         } while (!executionLimit.isEnd(currentBest.getFitnessComputeResult().fitness(), startInstant));
 
+        listeners.parallelStream()
+                .forEach(ExecutionListener::sendEndSignal);
         return currentBest;
     }
 }
